@@ -52,13 +52,13 @@ namespace M02
             cbeComName.EditValue = "";
             cbeComName.Properties.DisplayMember = "";
             cbeComName.Properties.ValueMember = "";
+
+            txeCREATE.EditValue = "0";
+            txeDATE.EditValue = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
         private void LoadData()
         {
-            txeCREATE.EditValue = "0";
-            txeDATE.EditValue = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, OIDCompany AS CompanyNo, 'Thai Parfun' AS CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
             sbSQL.Append("FROM CalendarMaster ");
