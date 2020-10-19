@@ -56,6 +56,9 @@ namespace M02
 
         private void LoadData()
         {
+            txeCREATE.EditValue = "0";
+            txeDATE.EditValue = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, OIDCompany AS CompanyNo, 'Thai Parfun' AS CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
             sbSQL.Append("FROM CalendarMaster ");
@@ -323,10 +326,17 @@ namespace M02
                     StringBuilder sbSQL = new StringBuilder();
                     //CalendarMaster
                     int ComType = findCompanyType(cbeComType.EditValue.ToString());
+
+                    string strCREATE = "0";
+                    if (txeCREATE.EditValue != null)
+                    {
+                        strCREATE = txeCREATE.EditValue.ToString();
+                    }
+
                     sbSQL.Append("IF NOT EXISTS(SELECT OIDCALENDAR FROM CalendarMaster WHERE OIDCALENDAR = '" + txteCalendarNo.EditValue.ToString() + "') ");
                     sbSQL.Append(" BEGIN ");
                     sbSQL.Append("  INSERT INTO CalendarMaster(CompanyType, OIDCompany, WorkingPerWeek, Year, CreatedBy, CreatedDate) ");
-                    sbSQL.Append("  VALUES('" + ComType.ToString() + "', '" + cbeComName.EditValue.ToString() + "', '" + lueWorkDay.EditValue.ToString() + "', '" + speYEAR.Value.ToString() + "', '0', GETDATE()) ");
+                    sbSQL.Append("  VALUES('" + ComType.ToString() + "', '" + cbeComName.EditValue.ToString() + "', '" + lueWorkDay.EditValue.ToString() + "', '" + speYEAR.Value.ToString() + "', '" + strCREATE + "', GETDATE()) ");
                     sbSQL.Append(" END ");
                     sbSQL.Append("ELSE ");
                     sbSQL.Append(" BEGIN ");
@@ -380,6 +390,9 @@ namespace M02
             cbeComType.EditValue = findCompanyTypeName(gvCalendar.GetFocusedRowCellValue("CompanyType").ToString());
             cbeComName.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyNo").ToString();
             lueWorkDay.EditValue = gvCalendar.GetFocusedRowCellValue("WorkingPerWeek").ToString();
+
+            txeCREATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedBy").ToString();
+            txeDATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedDate").ToString();
         }
     }
 }
