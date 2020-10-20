@@ -52,13 +52,13 @@ namespace M02
             cbeComName.EditValue = "";
             cbeComName.Properties.DisplayMember = "";
             cbeComName.Properties.ValueMember = "";
+
+            txeCREATE.EditValue = "0";
+            txeDATE.EditValue = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
         private void LoadData()
         {
-            txeCREATE.EditValue = "0";
-            txeDATE.EditValue = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
             StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, OIDCompany AS CompanyNo, 'Thai Parfun' AS CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
             sbSQL.Append("FROM CalendarMaster ");
@@ -82,7 +82,7 @@ namespace M02
             sbSQL.Append("SELECT '1' AS ID, 'Monday --> Saturday' AS WorkingPerWeek ");
             sbSQL.Append("UNION ALL ");
             sbSQL.Append("SELECT '2' AS ID, 'Sunday --> Saturday' AS WorkingPerWeek ");
-            new ObjDevEx.setLookUpEdit(lueWorkDay, sbSQL, "WorkingPerWeek", "ID").getData();
+            new ObjDevEx.setGridLookUpEdit(lueWorkDay, sbSQL, "WorkingPerWeek", "ID").getData();
         }
 
         private void LoadHoliday()
@@ -393,6 +393,11 @@ namespace M02
 
             txeCREATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedBy").ToString();
             txeDATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedDate").ToString();
+        }
+
+        private void lueWorkDay_EditValueChanged_1(object sender, EventArgs e)
+        {
+            ShowCheckDay(lueWorkDay.EditValue.ToString());
         }
     }
 }
