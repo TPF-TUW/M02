@@ -51,6 +51,9 @@
             this.ribbonPageGroup4 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.cbeComType = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.lblStatus = new DevExpress.XtraEditors.LabelControl();
             this.lueWorkDay = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txeDATE = new DevExpress.XtraEditors.TextEdit();
@@ -64,7 +67,6 @@
             this.cheTuesday = new DevExpress.XtraEditors.CheckEdit();
             this.cheMonday = new DevExpress.XtraEditors.CheckEdit();
             this.cheSunday = new DevExpress.XtraEditors.CheckEdit();
-            this.cbeComType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.gcCalendar = new DevExpress.XtraGrid.GridControl();
             this.gvCalendar = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.speYEAR = new DevExpress.XtraEditors.SpinEdit();
@@ -77,7 +79,6 @@
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.tabbedControlGroup1 = new DevExpress.XtraLayout.TabbedControlGroup();
@@ -97,9 +98,13 @@
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbeComType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lueWorkDay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeDATE.Properties)).BeginInit();
@@ -113,7 +118,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.cheTuesday.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cheMonday.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cheSunday.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbeComType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcCalendar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCalendar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speYEAR.Properties)).BeginInit();
@@ -126,7 +130,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).BeginInit();
@@ -146,6 +149,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             this.SuspendLayout();
             // 
             // ribbonControl
@@ -321,6 +326,8 @@
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cbeComType);
+            this.layoutControl1.Controls.Add(this.lblStatus);
             this.layoutControl1.Controls.Add(this.lueWorkDay);
             this.layoutControl1.Controls.Add(this.txeDATE);
             this.layoutControl1.Controls.Add(this.txeCREATE);
@@ -332,7 +339,6 @@
             this.layoutControl1.Controls.Add(this.cheTuesday);
             this.layoutControl1.Controls.Add(this.cheMonday);
             this.layoutControl1.Controls.Add(this.cheSunday);
-            this.layoutControl1.Controls.Add(this.cbeComType);
             this.layoutControl1.Controls.Add(this.gcCalendar);
             this.layoutControl1.Controls.Add(this.speYEAR);
             this.layoutControl1.Controls.Add(this.txteCalendarNo);
@@ -345,6 +351,38 @@
             this.layoutControl1.Size = new System.Drawing.Size(994, 415);
             this.layoutControl1.TabIndex = 4;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // cbeComType
+            // 
+            this.cbeComType.Location = new System.Drawing.Point(92, 52);
+            this.cbeComType.MenuManager = this.ribbonControl;
+            this.cbeComType.Name = "cbeComType";
+            this.cbeComType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cbeComType.Properties.NullText = "";
+            this.cbeComType.Properties.PopupView = this.gridView1;
+            this.cbeComType.Size = new System.Drawing.Size(122, 20);
+            this.cbeComType.StyleController = this.layoutControl1;
+            this.cbeComType.TabIndex = 25;
+            this.cbeComType.EditValueChanged += new System.EventHandler(this.cbeComType_EditValueChanged);
+            // 
+            // gridView1
+            // 
+            this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView1.Name = "gridView1";
+            this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView1.OptionsView.ShowGroupPanel = false;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Appearance.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.lblStatus.Appearance.Options.UseFont = true;
+            this.lblStatus.Location = new System.Drawing.Point(167, 4);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(63, 13);
+            this.lblStatus.StyleController = this.layoutControl1;
+            this.lblStatus.TabIndex = 24;
+            this.lblStatus.Text = "labelControl1";
             // 
             // lueWorkDay
             // 
@@ -480,23 +518,6 @@
             this.cheSunday.StyleController = this.layoutControl1;
             this.cheSunday.TabIndex = 10;
             // 
-            // cbeComType
-            // 
-            this.cbeComType.Location = new System.Drawing.Point(92, 52);
-            this.cbeComType.MenuManager = this.ribbonControl;
-            this.cbeComType.Name = "cbeComType";
-            this.cbeComType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cbeComType.Properties.Items.AddRange(new object[] {
-            "Thai Parfun",
-            "Customer",
-            "Vendor"});
-            this.cbeComType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cbeComType.Size = new System.Drawing.Size(122, 20);
-            this.cbeComType.StyleController = this.layoutControl1;
-            this.cbeComType.TabIndex = 1;
-            this.cbeComType.SelectedIndexChanged += new System.EventHandler(this.cbeComType_SelectedIndexChanged);
-            // 
             // gcCalendar
             // 
             this.gcCalendar.Location = new System.Drawing.Point(384, 30);
@@ -589,13 +610,14 @@
             this.layoutControlItem2,
             this.emptySpaceItem1,
             this.layoutControlItem4,
-            this.layoutControlItem6,
             this.emptySpaceItem3,
             this.layoutControlGroup2,
             this.layoutControlGroup4,
             this.layoutControlItem16,
             this.layoutControlItem14,
-            this.emptySpaceItem4});
+            this.emptySpaceItem4,
+            this.layoutControlItem15,
+            this.layoutControlItem18});
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
             this.Root.Size = new System.Drawing.Size(994, 415);
@@ -616,9 +638,9 @@
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(163, 0);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(230, 0);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(212, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(145, 24);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem2
@@ -652,18 +674,6 @@
             this.layoutControlItem4.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem4.Text = "Company Name";
             this.layoutControlItem4.TextSize = new System.Drawing.Size(85, 14);
-            // 
-            // layoutControlItem6
-            // 
-            this.layoutControlItem6.Control = this.cbeComType;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 48);
-            this.layoutControlItem6.MaxSize = new System.Drawing.Size(214, 24);
-            this.layoutControlItem6.MinSize = new System.Drawing.Size(214, 24);
-            this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(214, 24);
-            this.layoutControlItem6.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem6.Text = "Company Type";
-            this.layoutControlItem6.TextSize = new System.Drawing.Size(85, 14);
             // 
             // emptySpaceItem3
             // 
@@ -846,6 +856,24 @@
             this.emptySpaceItem4.Size = new System.Drawing.Size(375, 10);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // layoutControlItem15
+            // 
+            this.layoutControlItem15.Control = this.lblStatus;
+            this.layoutControlItem15.Location = new System.Drawing.Point(163, 0);
+            this.layoutControlItem15.Name = "layoutControlItem15";
+            this.layoutControlItem15.Size = new System.Drawing.Size(67, 24);
+            this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem15.TextVisible = false;
+            // 
+            // layoutControlItem18
+            // 
+            this.layoutControlItem18.Control = this.cbeComType;
+            this.layoutControlItem18.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem18.Name = "layoutControlItem18";
+            this.layoutControlItem18.Size = new System.Drawing.Size(214, 24);
+            this.layoutControlItem18.Text = "Company Type";
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(85, 14);
+            // 
             // XtraForm1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -864,6 +892,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cbeComType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lueWorkDay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txeDATE.Properties)).EndInit();
@@ -877,7 +907,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.cheTuesday.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cheMonday.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cheSunday.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbeComType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcCalendar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCalendar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.speYEAR.Properties)).EndInit();
@@ -890,7 +919,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).EndInit();
@@ -910,6 +938,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -950,8 +980,6 @@
         private DevExpress.XtraGrid.Views.Grid.GridView searchLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
-        private DevExpress.XtraEditors.ComboBoxEdit cbeComType;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraGrid.GridControl gcHoliday;
         private DevExpress.XtraGrid.Views.Grid.GridView gvHoliday;
@@ -983,5 +1011,10 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
+        private DevExpress.XtraEditors.LabelControl lblStatus;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraEditors.GridLookUpEdit cbeComType;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
     }
 }

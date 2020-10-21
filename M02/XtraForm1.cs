@@ -53,6 +53,9 @@ namespace M02
             cbeComName.Properties.DisplayMember = "";
             cbeComName.Properties.ValueMember = "";
 
+            lblStatus.Text = "* Add Calendar";
+            lblStatus.ForeColor = Color.Green;
+
             txeCREATE.EditValue = "0";
             txeDATE.EditValue = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
@@ -60,16 +63,16 @@ namespace M02
         private void LoadData()
         {
             StringBuilder sbSQL = new StringBuilder();
-            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, OIDCompany AS CompanyNo, 'Thai Parfun' AS CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Thai Parfun' AS CompanyTypeName, OIDCompany AS CompanyNo, 'Thai Parfun' AS CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
             sbSQL.Append("FROM CalendarMaster ");
             sbSQL.Append("WHERE CompanyType = 0 AND Year = '" + speYEAR.Value + "' ");
             sbSQL.Append("UNION ALL ");
-            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Customer' AS CompanyTypeName, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
             sbSQL.Append("FROM CalendarMaster A ");
             sbSQL.Append("CROSS APPLY(SELECT ShortName AS CompanyName FROM Customer WHERE OIDCUST = A.OIDCompany) B ");
             sbSQL.Append("WHERE CompanyType = 1 AND Year = '" + speYEAR.Value + "' ");
             sbSQL.Append("UNION ALL ");
-            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Vendor' AS CompanyTypeName, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
             sbSQL.Append("FROM CalendarMaster C ");
             sbSQL.Append("CROSS APPLY(SELECT Name AS CompanyName FROM Vendor WHERE OIDVEND = C.OIDCompany) D ");
             sbSQL.Append("WHERE CompanyType = 2 AND Year = '" + speYEAR.Value + "' ");
@@ -83,6 +86,14 @@ namespace M02
             sbSQL.Append("UNION ALL ");
             sbSQL.Append("SELECT '2' AS ID, 'Sunday --> Saturday' AS WorkingPerWeek ");
             new ObjDevEx.setGridLookUpEdit(lueWorkDay, sbSQL, "WorkingPerWeek", "ID").getData();
+
+            sbSQL.Clear();
+            sbSQL.Append("SELECT '0' AS ID, 'Thai Parfun' AS CompanyType ");
+            sbSQL.Append("UNION ALL ");
+            sbSQL.Append("SELECT '1' AS ID, 'Customer' AS CompanyType ");
+            sbSQL.Append("UNION ALL ");
+            sbSQL.Append("SELECT '2' AS ID, 'Vendor' AS CompanyType ");
+            new ObjDevEx.setGridLookUpEdit(cbeComType, sbSQL, "CompanyType", "ID").getData();
         }
 
         private void LoadHoliday()
@@ -133,82 +144,78 @@ namespace M02
             cbeComName.Properties.ValueMember = "";
 
             new ObjDevEx.setSearchLookUpEdit(cbeComName).ClearSearchLookUpEdit();
-
-            int CompanyID = findCompanyType(cbeComType.EditValue.ToString());
-            StringBuilder sbSQL = new StringBuilder();
-            if (CompanyID == 0)
+            if (cbeComType.Text.Trim() != "")
             {
-                sbSQL.Append("SELECT '0' AS ID, 'Thai Parfun' AS Name");
-            }
-            else if (CompanyID == 1)
-            {
-                sbSQL.Append("SELECT OIDCUST AS ID, ShortName AS Name FROM Customer ORDER BY ShortName");
-            }
-            else if (CompanyID == 2)
-            {
-                sbSQL.Append("SELECT OIDVEND AS ID, Name FROM Vendor ORDER BY Name");
-            }
-
-            if(sbSQL.Length > 0)
-            {
-                new ObjDevEx.setSearchLookUpEdit(cbeComName, sbSQL, "Name", "ID").getData(false);
-                try
+                int CompanyID = Convert.ToInt32(cbeComType.EditValue.ToString());
+                StringBuilder sbSQL = new StringBuilder();
+                if (CompanyID == 0)
                 {
-                    cbeComName.Properties.View.Columns[0].BestFit();
+                    sbSQL.Append("SELECT '0' AS ID, 'Thai Parfun' AS Name");
                 }
-                catch (Exception) { }
-                
+                else if (CompanyID == 1)
+                {
+                    sbSQL.Append("SELECT OIDCUST AS ID, ShortName AS Name FROM Customer ORDER BY ShortName");
+                }
+                else if (CompanyID == 2)
+                {
+                    sbSQL.Append("SELECT OIDVEND AS ID, Name FROM Vendor ORDER BY Name");
+                }
+
+                if (sbSQL.Length > 0)
+                {
+                    new ObjDevEx.setSearchLookUpEdit(cbeComName, sbSQL, "Name", "ID").getData(false);
+                    try
+                    {
+                        cbeComName.Properties.View.Columns[0].BestFit();
+                    }
+                    catch (Exception) { }
+
+                }
             }
-            
         }
 
-        private int findCompanyType(string Company)
-        {
-            int return_value = 999;
-            switch (Company)
-            {
-                case "Thai Parfun": 
-                    return_value = 0; 
-                    break;
-                case "Customer":
-                    return_value = 1;
-                    break;
-                case "Vendor":
-                    return_value = 2;
-                    break;
-                default:
-                    return_value = 999;
-                    break;
-            }
-            return return_value;
-        }
+        //private int findCompanyType(string Company)
+        //{
+        //    int return_value = 999;
+        //    switch (Company)
+        //    {
+        //        case "Thai Parfun": 
+        //            return_value = 0; 
+        //            break;
+        //        case "Customer":
+        //            return_value = 1;
+        //            break;
+        //        case "Vendor":
+        //            return_value = 2;
+        //            break;
+        //        default:
+        //            return_value = 999;
+        //            break;
+        //    }
+        //    return return_value;
+        //}
 
-        private string findCompanyTypeName(string Company)
-        {
-            string return_value = "";
-            switch (Company)
-            {
-                case "0":
-                    return_value = "Thai Parfun";
-                    break;
-                case "1":
-                    return_value = "Customer";
-                    break;
-                case "2":
-                    return_value = "Vendor";
-                    break;
-                default:
-                    return_value = "";
-                    break;
-            }
-            return return_value;
-        }
+        //private string findCompanyTypeName(string Company)
+        //{
+        //    string return_value = "";
+        //    switch (Company)
+        //    {
+        //        case "0":
+        //            return_value = "Thai Parfun";
+        //            break;
+        //        case "1":
+        //            return_value = "Customer";
+        //            break;
+        //        case "2":
+        //            return_value = "Vendor";
+        //            break;
+        //        default:
+        //            return_value = "";
+        //            break;
+        //    }
+        //    return return_value;
+        //}
 
-        private void cbeComType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadCompanyName();
-            cbeComName.Focus();
-        }
 
         private void cbeComName_Click(object sender, EventArgs e)
         {
@@ -306,17 +313,17 @@ namespace M02
                 FUNC.msgWarning("The year must have 4 digits.");
                 speYEAR.Focus();
             }
-            else if (cbeComType.EditValue.ToString() == "")
+            else if (cbeComType.Text.Trim() == "")
             {
                 FUNC.msgWarning("Please input company type.");
                 cbeComType.Focus();
             }
-            else if (cbeComName.EditValue.ToString() == "")
+            else if (cbeComName.Text.Trim() == "")
             {
                 FUNC.msgWarning("Please input company name.");
                 cbeComName.Focus();
             }
-            else if (lueWorkDay.EditValue.ToString() == "")
+            else if (lueWorkDay.Text.Trim() == "")
             {
                 FUNC.msgWarning("Please select working per week.");
                 lueWorkDay.Focus();
@@ -327,15 +334,15 @@ namespace M02
                 {
                     StringBuilder sbSQL = new StringBuilder();
                     //CalendarMaster
-                    int ComType = findCompanyType(cbeComType.EditValue.ToString());
+                    int ComType = Convert.ToInt32(cbeComType.EditValue.ToString());
 
                     string strCREATE = "0";
-                    if (txeCREATE.EditValue != null)
+                    if (txeCREATE.Text.Trim() != "")
                     {
-                        strCREATE = txeCREATE.EditValue.ToString();
+                        strCREATE = txeCREATE.Text.Trim();
                     }
 
-                    sbSQL.Append("IF NOT EXISTS(SELECT OIDCALENDAR FROM CalendarMaster WHERE OIDCALENDAR = '" + txteCalendarNo.EditValue.ToString() + "') ");
+                    sbSQL.Append("IF NOT EXISTS(SELECT OIDCALENDAR FROM CalendarMaster WHERE OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
                     sbSQL.Append(" BEGIN ");
                     sbSQL.Append("  INSERT INTO CalendarMaster(CompanyType, OIDCompany, WorkingPerWeek, Year, CreatedBy, CreatedDate) ");
                     sbSQL.Append("  VALUES('" + ComType.ToString() + "', '" + cbeComName.EditValue.ToString() + "', '" + lueWorkDay.EditValue.ToString() + "', '" + speYEAR.Value.ToString() + "', '" + strCREATE + "', GETDATE()) ");
@@ -344,11 +351,11 @@ namespace M02
                     sbSQL.Append(" BEGIN ");
                     sbSQL.Append("  UPDATE CalendarMaster SET ");
                     sbSQL.Append("      CompanyType = '" + ComType.ToString() + "', OIDCompany = '" + cbeComName.EditValue.ToString() + "', WorkingPerWeek = '" + lueWorkDay.EditValue.ToString() + "', Year = '" + speYEAR.Value.ToString() + "' ");
-                    sbSQL.Append("  WHERE(OIDCALENDAR = '" + txteCalendarNo.EditValue.ToString() + "') ");
+                    sbSQL.Append("  WHERE(OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
                     sbSQL.Append(" END ");
 
                     //CalendarDetail
-                    sbSQL.Append("DELETE FROM CalendarDetail WHERE(OIDCALENDAR = '" + txteCalendarNo.EditValue.ToString() + "') ");
+                    sbSQL.Append("DELETE FROM CalendarDetail WHERE(OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
 
                     if (gvHoliday.RowCount > 0)
                     {
@@ -359,7 +366,7 @@ namespace M02
                             {
                                 xDATE = Convert.ToDateTime(xDATE).ToString("yyyy-MM-dd");
                                 sbSQL.Append("INSERT INTO CalendarDetail(OIDCALENDAR, Holiday) ");
-                                sbSQL.Append("  VALUES('" + txteCalendarNo.EditValue.ToString() + "', '" + xDATE + "')  ");
+                                sbSQL.Append("  VALUES('" + txteCalendarNo.Text.Trim() + "', '" + xDATE + "')  ");
                             }
                         }
                     }
@@ -386,10 +393,13 @@ namespace M02
 
         private void gvCalendar_RowCellClick(object sender, RowCellClickEventArgs e)
         {
+            lblStatus.Text = "* Edit Calendar";
+            lblStatus.ForeColor = Color.Red;
+
             txteCalendarNo.EditValue = gvCalendar.GetFocusedRowCellValue("CalendarNo").ToString();
             LoadHoliday();
             speYEAR.Value = Convert.ToInt32(gvCalendar.GetFocusedRowCellValue("Year").ToString());
-            cbeComType.EditValue = findCompanyTypeName(gvCalendar.GetFocusedRowCellValue("CompanyType").ToString());
+            cbeComType.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyType").ToString();
             cbeComName.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyNo").ToString();
             lueWorkDay.EditValue = gvCalendar.GetFocusedRowCellValue("WorkingPerWeek").ToString();
 
@@ -412,7 +422,51 @@ namespace M02
 
         private void cbeComName_EditValueChanged(object sender, EventArgs e)
         {
-            lueWorkDay.Focus();
+            if (cbeComName.Text.Trim() != "" && lblStatus.Text == "* Add Calendar")
+            {
+                StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT TOP(1) OIDCALENDAR FROM CalendarMaster WHERE (CompanyType = '" + cbeComType.EditValue.ToString() + "') AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
+                if (new DBQuery(sbSQL).getString() != "")
+                {
+                    FUNC.msgWarning("Duplicate company. !! Please Change.");
+                    cbeComName.EditValue = "";
+                    cbeComName.Focus();
+                }
+                else
+                {
+                    lueWorkDay.Focus();
+                }
+            }
+            else if (cbeComName.Text.Trim() != "" && lblStatus.Text == "* Edit Calendar")
+            {
+                StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT TOP(1) OIDCALENDAR ");
+                sbSQL.Append("FROM CalendarMaster ");
+                sbSQL.Append("WHERE (CompanyType = '" + cbeComType.EditValue.ToString() + "') ");
+                sbSQL.Append("AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
+                string strCHK = new DBQuery(sbSQL).getString();
+                if (strCHK != "" && strCHK != txteCalendarNo.Text.Trim())
+                {
+                    FUNC.msgWarning("Duplicate company. !! Please Change.");
+                    cbeComName.EditValue = "";
+                    cbeComName.Focus();
+                }
+                else
+                {
+                    lueWorkDay.Focus();
+                }
+            }
+            else
+            {
+                lueWorkDay.Focus();
+            }
+        }
+
+
+        private void cbeComType_EditValueChanged(object sender, EventArgs e)
+        {
+            LoadCompanyName();
+            cbeComName.Focus();
         }
     }
 }
