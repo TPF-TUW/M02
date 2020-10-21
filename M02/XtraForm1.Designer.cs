@@ -353,10 +353,11 @@
             this.lueWorkDay.Name = "lueWorkDay";
             this.lueWorkDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.lueWorkDay.Properties.NullText = "";
             this.lueWorkDay.Properties.PopupView = this.gridLookUpEdit1View;
             this.lueWorkDay.Size = new System.Drawing.Size(263, 20);
             this.lueWorkDay.StyleController = this.layoutControl1;
-            this.lueWorkDay.TabIndex = 24;
+            this.lueWorkDay.TabIndex = 3;
             this.lueWorkDay.EditValueChanged += new System.EventHandler(this.lueWorkDay_EditValueChanged_1);
             // 
             // gridLookUpEdit1View
@@ -493,7 +494,7 @@
             this.cbeComType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.cbeComType.Size = new System.Drawing.Size(122, 20);
             this.cbeComType.StyleController = this.layoutControl1;
-            this.cbeComType.TabIndex = 9;
+            this.cbeComType.TabIndex = 1;
             this.cbeComType.SelectedIndexChanged += new System.EventHandler(this.cbeComType_SelectedIndexChanged);
             // 
             // gcCalendar
@@ -539,7 +540,8 @@
             0});
             this.speYEAR.Size = new System.Drawing.Size(71, 20);
             this.speYEAR.StyleController = this.layoutControl1;
-            this.speYEAR.TabIndex = 5;
+            this.speYEAR.TabIndex = 0;
+            this.speYEAR.KeyDown += new System.Windows.Forms.KeyEventHandler(this.speYEAR_KeyDown);
             // 
             // txteCalendarNo
             // 
@@ -566,7 +568,8 @@
             this.cbeComName.Properties.PopupView = this.searchLookUpEdit1View;
             this.cbeComName.Size = new System.Drawing.Size(283, 20);
             this.cbeComName.StyleController = this.layoutControl1;
-            this.cbeComName.TabIndex = 7;
+            this.cbeComName.TabIndex = 2;
+            this.cbeComName.EditValueChanged += new System.EventHandler(this.cbeComName_EditValueChanged);
             this.cbeComName.Click += new System.EventHandler(this.cbeComName_Click);
             // 
             // searchLookUpEdit1View

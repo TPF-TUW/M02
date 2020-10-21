@@ -207,6 +207,7 @@ namespace M02
         private void cbeComType_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadCompanyName();
+            cbeComName.Focus();
         }
 
         private void cbeComName_Click(object sender, EventArgs e)
@@ -229,6 +230,7 @@ namespace M02
             ClearCheckDay();
             gvCalendar.OptionsBehavior.Editable = false;
             gvCalendar.ClearSelection();
+            speYEAR.Focus();
         }
 
         private void lueWorkDay_EditValueChanged(object sender, EventArgs e)
@@ -398,6 +400,19 @@ namespace M02
         private void lueWorkDay_EditValueChanged_1(object sender, EventArgs e)
         {
             ShowCheckDay(lueWorkDay.EditValue.ToString());
+        }
+
+        private void speYEAR_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                cbeComType.Focus();
+            }
+        }
+
+        private void cbeComName_EditValueChanged(object sender, EventArgs e)
+        {
+            lueWorkDay.Focus();
         }
     }
 }
