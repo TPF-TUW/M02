@@ -535,6 +535,7 @@
             this.gvCalendar.Name = "gvCalendar";
             this.gvCalendar.OptionsView.ShowGroupPanel = false;
             this.gvCalendar.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gvCalendar_RowCellClick);
+            this.gvCalendar.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvCalendar_RowStyle);
             // 
             // speYEAR
             // 
