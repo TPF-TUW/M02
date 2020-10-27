@@ -174,49 +174,6 @@ namespace M02
             }
         }
 
-        //private int findCompanyType(string Company)
-        //{
-        //    int return_value = 999;
-        //    switch (Company)
-        //    {
-        //        case "Thai Parfun": 
-        //            return_value = 0; 
-        //            break;
-        //        case "Customer":
-        //            return_value = 1;
-        //            break;
-        //        case "Vendor":
-        //            return_value = 2;
-        //            break;
-        //        default:
-        //            return_value = 999;
-        //            break;
-        //    }
-        //    return return_value;
-        //}
-
-        //private string findCompanyTypeName(string Company)
-        //{
-        //    string return_value = "";
-        //    switch (Company)
-        //    {
-        //        case "0":
-        //            return_value = "Thai Parfun";
-        //            break;
-        //        case "1":
-        //            return_value = "Customer";
-        //            break;
-        //        case "2":
-        //            return_value = "Vendor";
-        //            break;
-        //        default:
-        //            return_value = "";
-        //            break;
-        //    }
-        //    return return_value;
-        //}
-
-
         private void cbeComName_Click(object sender, EventArgs e)
         {
             try
@@ -342,17 +299,29 @@ namespace M02
                         strCREATE = txeCREATE.Text.Trim();
                     }
 
-                    sbSQL.Append("IF NOT EXISTS(SELECT OIDCALENDAR FROM CalendarMaster WHERE OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
-                    sbSQL.Append(" BEGIN ");
-                    sbSQL.Append("  INSERT INTO CalendarMaster(CompanyType, OIDCompany, WorkingPerWeek, Year, CreatedBy, CreatedDate) ");
-                    sbSQL.Append("  VALUES('" + ComType.ToString() + "', '" + cbeComName.EditValue.ToString() + "', '" + lueWorkDay.EditValue.ToString() + "', '" + speYEAR.Value.ToString() + "', '" + strCREATE + "', GETDATE()) ");
-                    sbSQL.Append(" END ");
-                    sbSQL.Append("ELSE ");
-                    sbSQL.Append(" BEGIN ");
-                    sbSQL.Append("  UPDATE CalendarMaster SET ");
-                    sbSQL.Append("      CompanyType = '" + ComType.ToString() + "', OIDCompany = '" + cbeComName.EditValue.ToString() + "', WorkingPerWeek = '" + lueWorkDay.EditValue.ToString() + "', Year = '" + speYEAR.Value.ToString() + "' ");
-                    sbSQL.Append("  WHERE(OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
-                    sbSQL.Append(" END ");
+                    if (lblStatus.Text == "* Add Calendar")
+                    {
+                        sbSQL.Append("  INSERT INTO CalendarMaster(CompanyType, OIDCompany, WorkingPerWeek, Year, CreatedBy, CreatedDate) ");
+                        sbSQL.Append("  VALUES('" + ComType.ToString() + "', '" + cbeComName.EditValue.ToString() + "', '" + lueWorkDay.EditValue.ToString() + "', '" + speYEAR.Value.ToString() + "', '" + strCREATE + "', GETDATE()) ");
+                    }
+                    else if (lblStatus.Text == "* Edit Calendar")
+                    {
+                        sbSQL.Append("  UPDATE CalendarMaster SET ");
+                        sbSQL.Append("      CompanyType = '" + ComType.ToString() + "', OIDCompany = '" + cbeComName.EditValue.ToString() + "', WorkingPerWeek = '" + lueWorkDay.EditValue.ToString() + "', Year = '" + speYEAR.Value.ToString() + "' ");
+                        sbSQL.Append("  WHERE (OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
+                    }
+
+                    //sbSQL.Append("IF NOT EXISTS(SELECT OIDCALENDAR FROM CalendarMaster WHERE OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
+                    //sbSQL.Append(" BEGIN ");
+                    //sbSQL.Append("  INSERT INTO CalendarMaster(CompanyType, OIDCompany, WorkingPerWeek, Year, CreatedBy, CreatedDate) ");
+                    //sbSQL.Append("  VALUES('" + ComType.ToString() + "', '" + cbeComName.EditValue.ToString() + "', '" + lueWorkDay.EditValue.ToString() + "', '" + speYEAR.Value.ToString() + "', '" + strCREATE + "', GETDATE()) ");
+                    //sbSQL.Append(" END ");
+                    //sbSQL.Append("ELSE ");
+                    //sbSQL.Append(" BEGIN ");
+                    //sbSQL.Append("  UPDATE CalendarMaster SET ");
+                    //sbSQL.Append("      CompanyType = '" + ComType.ToString() + "', OIDCompany = '" + cbeComName.EditValue.ToString() + "', WorkingPerWeek = '" + lueWorkDay.EditValue.ToString() + "', Year = '" + speYEAR.Value.ToString() + "' ");
+                    //sbSQL.Append("  WHERE(OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
+                    //sbSQL.Append(" END ");
 
                     //CalendarDetail
                     sbSQL.Append("DELETE FROM CalendarDetail WHERE(OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
