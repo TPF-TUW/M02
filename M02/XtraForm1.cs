@@ -362,18 +362,7 @@ namespace M02
 
         private void gvCalendar_RowCellClick(object sender, RowCellClickEventArgs e)
         {
-            lblStatus.Text = "* Edit Calendar";
-            lblStatus.ForeColor = Color.Red;
-
-            txteCalendarNo.EditValue = gvCalendar.GetFocusedRowCellValue("CalendarNo").ToString();
-            LoadHoliday();
-            speYEAR.Value = Convert.ToInt32(gvCalendar.GetFocusedRowCellValue("Year").ToString());
-            cbeComType.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyType").ToString();
-            cbeComName.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyNo").ToString();
-            lueWorkDay.EditValue = gvCalendar.GetFocusedRowCellValue("WorkingPerWeek").ToString();
-
-            txeCREATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedBy").ToString();
-            txeDATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedDate").ToString();
+            
         }
 
         private void lueWorkDay_EditValueChanged_1(object sender, EventArgs e)
@@ -441,6 +430,22 @@ namespace M02
         private void gvCalendar_RowStyle(object sender, RowStyleEventArgs e)
         {
             
+        }
+
+        private void gvCalendar_RowClick(object sender, RowClickEventArgs e)
+        {
+            lblStatus.Text = "* Edit Calendar";
+            lblStatus.ForeColor = Color.Red;
+
+            txteCalendarNo.EditValue = gvCalendar.GetFocusedRowCellValue("CalendarNo").ToString();
+            LoadHoliday();
+            speYEAR.Value = Convert.ToInt32(gvCalendar.GetFocusedRowCellValue("Year").ToString());
+            cbeComType.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyType").ToString();
+            cbeComName.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyNo").ToString();
+            lueWorkDay.EditValue = gvCalendar.GetFocusedRowCellValue("WorkingPerWeek").ToString();
+
+            txeCREATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedBy").ToString();
+            txeDATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedDate").ToString();
         }
     }
 }

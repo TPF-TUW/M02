@@ -536,6 +536,7 @@
             this.gvCalendar.OptionsView.EnableAppearanceEvenRow = true;
             this.gvCalendar.OptionsView.EnableAppearanceOddRow = true;
             this.gvCalendar.OptionsView.ShowGroupPanel = false;
+            this.gvCalendar.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gvCalendar_RowClick);
             this.gvCalendar.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gvCalendar_RowCellClick);
             this.gvCalendar.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvCalendar_RowStyle);
             // 
