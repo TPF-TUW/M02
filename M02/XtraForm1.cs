@@ -447,5 +447,15 @@ namespace M02
             txeCREATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedBy").ToString();
             txeDATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedDate").ToString();
         }
+
+        private void bbiPrintPreview_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            gcCalendar.ShowPrintPreview();
+        }
+
+        private void bbiPrint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            gcCalendar.Print();
+        }
     }
 }
