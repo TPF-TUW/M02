@@ -37,21 +37,31 @@ namespace M02
 
         private void XtraForm1_Load(object sender, EventArgs e)
         {
+            speYEAR.Value = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
+            cbeComType.EditValue = "";
             bbiNew.PerformClick();
-            
+            LoadData();
         }
 
         private void NewData()
         {
             txteCalendarNo.EditValue = new DBQuery("SELECT CASE WHEN ISNULL(MAX(OIDCALENDAR), '') = '' THEN 1 ELSE MAX(OIDCALENDAR) + 1 END AS NewNo FROM CalendarMaster").getString();
             //txteCalendarNo.EditValue = "";
-            speYEAR.Value = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
 
-            cbeComType.EditValue = "";
+            if (speYEAR.Value < 2000)
+            {
+                speYEAR.Value = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
+            }
+
+            string xType = "";
+            if (cbeComType.Text.Trim() != "")
+            {
+                xType = cbeComType.EditValue.ToString();
+            }
+            LoadGV(speYEAR.Value.ToString(), xType);
 
             cbeComName.EditValue = "";
-            cbeComName.Properties.DisplayMember = "";
-            cbeComName.Properties.ValueMember = "";
+            lueWorkDay.EditValue = "";
 
             lblStatus.Text = "* Add Calendar";
             lblStatus.ForeColor = Color.Green;
@@ -62,24 +72,14 @@ namespace M02
 
         private void LoadData()
         {
-            StringBuilder sbSQL = new StringBuilder();
-            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Thai Parfun' AS CompanyTypeName, OIDCompany AS CompanyNo, 'Thai Parfun' AS CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
-            sbSQL.Append("FROM CalendarMaster ");
-            sbSQL.Append("WHERE CompanyType = 0 AND Year = '" + speYEAR.Value + "' ");
-            sbSQL.Append("UNION ALL ");
-            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Customer' AS CompanyTypeName, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
-            sbSQL.Append("FROM CalendarMaster A ");
-            sbSQL.Append("CROSS APPLY(SELECT ShortName AS CompanyName FROM Customer WHERE OIDCUST = A.OIDCompany) B ");
-            sbSQL.Append("WHERE CompanyType = 1 AND Year = '" + speYEAR.Value + "' ");
-            sbSQL.Append("UNION ALL ");
-            sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Vendor' AS CompanyTypeName, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
-            sbSQL.Append("FROM CalendarMaster C ");
-            sbSQL.Append("CROSS APPLY(SELECT Name AS CompanyName FROM Vendor WHERE OIDVEND = C.OIDCompany) D ");
-            sbSQL.Append("WHERE CompanyType = 2 AND Year = '" + speYEAR.Value + "' ");
-            sbSQL.Append("ORDER BY CompanyType, OIDCALENDAR, CompanyName ");
-            new ObjDevEx.setGridControl(gcCalendar, gvCalendar, sbSQL).getData(false, false, true, true);
+            string xType = "";
+            if (cbeComType.Text.Trim() != "")
+            {
+                xType = cbeComType.EditValue.ToString();
+            }
+            LoadGV(speYEAR.Value.ToString(), xType);
 
-            sbSQL.Clear();
+            StringBuilder sbSQL = new StringBuilder();
             sbSQL.Append("SELECT '0' AS ID, 'Monday --> Friday' AS WorkingPerWeek ");
             sbSQL.Append("UNION ALL ");
             sbSQL.Append("SELECT '1' AS ID, 'Monday --> Saturday' AS WorkingPerWeek ");
@@ -189,7 +189,7 @@ namespace M02
             //MessageBox.Show(cbeComName.Properties.View.GetFocusedRowCellValue(cbeComName.Properties.ValueMember).ToString());
             //MessageBox.Show(cbeComName.EditValue.ToString());
             NewData();
-            LoadData();
+            //LoadData();
             LoadHoliday();
             ClearCheckDay();
             gvCalendar.OptionsBehavior.Editable = false;
@@ -383,7 +383,7 @@ namespace M02
             if (cbeComName.Text.Trim() != "" && lblStatus.Text == "* Add Calendar")
             {
                 StringBuilder sbSQL = new StringBuilder();
-                sbSQL.Append("SELECT TOP(1) OIDCALENDAR FROM CalendarMaster WHERE (CompanyType = '" + cbeComType.EditValue.ToString() + "') AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
+                sbSQL.Append("SELECT TOP(1) OIDCALENDAR FROM CalendarMaster WHERE (Year = '" + speYEAR.Value.ToString() + "') AND (CompanyType = '" + cbeComType.EditValue.ToString() + "') AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
                 if (new DBQuery(sbSQL).getString() != "")
                 {
                     FUNC.msgWarning("Duplicate company. !! Please Change.");
@@ -400,7 +400,8 @@ namespace M02
                 StringBuilder sbSQL = new StringBuilder();
                 sbSQL.Append("SELECT TOP(1) OIDCALENDAR ");
                 sbSQL.Append("FROM CalendarMaster ");
-                sbSQL.Append("WHERE (CompanyType = '" + cbeComType.EditValue.ToString() + "') ");
+                sbSQL.Append("WHERE (Year = '" + speYEAR.Value.ToString() + "') ");
+                sbSQL.Append("AND (CompanyType = '" + cbeComType.EditValue.ToString() + "') ");
                 sbSQL.Append("AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
                 string strCHK = new DBQuery(sbSQL).getString();
                 if (strCHK != "" && strCHK != txteCalendarNo.Text.Trim())
@@ -420,10 +421,97 @@ namespace M02
             }
         }
 
+        private void LoadGV(string Year="", string xType="")
+        {
+            StringBuilder sbSQL = new StringBuilder();
+            if (xType != "")
+            {
+                if (xType == "0")
+                {
+                    sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Thai Parfun' AS CompanyTypeName, OIDCompany AS CompanyNo, 'Thai Parfun' AS CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+                    sbSQL.Append("FROM CalendarMaster ");
+                    sbSQL.Append("WHERE CompanyType = 0 ");
+                    if (Year != "")
+                    {
+                        sbSQL.Append("AND (Year = '" + Year + "') ");
+                    }
+                    sbSQL.Append("ORDER BY CompanyType, OIDCALENDAR, CompanyName ");
+                }
+                else if (xType == "1")
+                {
+                    sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Customer' AS CompanyTypeName, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+                    sbSQL.Append("FROM CalendarMaster A ");
+                    sbSQL.Append("CROSS APPLY(SELECT ShortName AS CompanyName FROM Customer WHERE OIDCUST = A.OIDCompany) B ");
+                    sbSQL.Append("WHERE CompanyType = 1 ");
+                    if (Year != "")
+                    {
+                        sbSQL.Append("AND (Year = '" + Year + "') ");
+                    }
+                    sbSQL.Append("ORDER BY CompanyType, OIDCALENDAR, CompanyName ");
+                }
+                else if (xType == "2")
+                {
+                    sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Vendor' AS CompanyTypeName, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+                    sbSQL.Append("FROM CalendarMaster C ");
+                    sbSQL.Append("CROSS APPLY(SELECT Name AS CompanyName FROM Vendor WHERE OIDVEND = C.OIDCompany) D ");
+                    sbSQL.Append("WHERE CompanyType = 2 ");
+                    if (Year != "")
+                    {
+                        sbSQL.Append("AND (Year = '" + Year + "') ");
+                    }
+                    sbSQL.Append("ORDER BY CompanyType, OIDCALENDAR, CompanyName ");
+                }
+            }
+            else
+            {
+                
+                sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Thai Parfun' AS CompanyTypeName, OIDCompany AS CompanyNo, 'Thai Parfun' AS CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+                sbSQL.Append("FROM CalendarMaster ");
+                sbSQL.Append("WHERE CompanyType = 0  ");
+                if (Year != "")
+                {
+                    sbSQL.Append("AND (Year = '" + Year + "') ");
+                }
+                sbSQL.Append("UNION ALL ");
+                sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Customer' AS CompanyTypeName, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+                sbSQL.Append("FROM CalendarMaster A ");
+                sbSQL.Append("CROSS APPLY(SELECT ShortName AS CompanyName FROM Customer WHERE OIDCUST = A.OIDCompany) B ");
+                sbSQL.Append("WHERE CompanyType = 1  ");
+                if (Year != "")
+                {
+                    sbSQL.Append("AND (Year = '" + Year + "') ");
+                }
+                sbSQL.Append("UNION ALL ");
+                sbSQL.Append("SELECT OIDCALENDAR AS CalendarNo, CompanyType, 'Vendor' AS CompanyTypeName, OIDCompany AS CompanyNo, CompanyName, WorkingPerWeek, Year, CreatedBy, CreatedDate ");
+                sbSQL.Append("FROM CalendarMaster C ");
+                sbSQL.Append("CROSS APPLY(SELECT Name AS CompanyName FROM Vendor WHERE OIDVEND = C.OIDCompany) D ");
+                sbSQL.Append("WHERE CompanyType = 2  ");
+                if (Year != "")
+                {
+                    sbSQL.Append("AND (Year = '" + Year + "') ");
+                }
+                sbSQL.Append("ORDER BY CompanyType, OIDCALENDAR, CompanyName ");
+
+            }
+
+            gcCalendar.DataSource = null;
+            if (sbSQL.Length > 0)
+            {
+                new ObjDevEx.setGridControl(gcCalendar, gvCalendar, sbSQL).getData(false, false, true, true);
+            }
+        }
 
         private void cbeComType_EditValueChanged(object sender, EventArgs e)
         {
             LoadCompanyName();
+
+            string xType = "";
+            if (cbeComType.Text.Trim() != "")
+            {
+                xType = cbeComType.EditValue.ToString();
+            }
+            LoadGV(speYEAR.Value.ToString(), xType);
+
             cbeComName.Focus();
         }
 
@@ -456,6 +544,31 @@ namespace M02
         private void bbiPrint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             gcCalendar.Print();
+        }
+
+        private void speYEAR_EditValueChanged(object sender, EventArgs e)
+        {
+            string xType = "";
+            if (cbeComType.Text.Trim() != "")
+            {
+                xType = cbeComType.EditValue.ToString();
+            }
+            LoadGV(speYEAR.Value.ToString(), xType);
+        }
+
+        private void bbiRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            speYEAR.Value = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
+            cbeComType.EditValue = "";
+            NewData();
+            LoadData();
+            LoadHoliday();
+            ClearCheckDay();
+            gvCalendar.OptionsBehavior.Editable = false;
+            gvCalendar.ClearSelection();
+            speYEAR.Focus();
+
+            tabbedControlGroup1.SelectedTabPageIndex = 0;
         }
     }
 }

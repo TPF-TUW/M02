@@ -228,7 +228,7 @@
             this.bbiRefresh.Id = 19;
             this.bbiRefresh.ImageOptions.ImageUri.Uri = "Refresh";
             this.bbiRefresh.Name = "bbiRefresh";
-            this.bbiRefresh.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+            this.bbiRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbiRefresh_ItemClick);
             // 
             // bbiPrint
             // 
@@ -356,14 +356,14 @@
             // 
             // cbeComType
             // 
-            this.cbeComType.Location = new System.Drawing.Point(103, 52);
+            this.cbeComType.Location = new System.Drawing.Point(101, 52);
             this.cbeComType.MenuManager = this.ribbonControl;
             this.cbeComType.Name = "cbeComType";
             this.cbeComType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbeComType.Properties.NullText = "";
             this.cbeComType.Properties.PopupView = this.gridView1;
-            this.cbeComType.Size = new System.Drawing.Size(110, 20);
+            this.cbeComType.Size = new System.Drawing.Size(112, 20);
             this.cbeComType.StyleController = this.layoutControl1;
             this.cbeComType.TabIndex = 25;
             this.cbeComType.EditValueChanged += new System.EventHandler(this.cbeComType_EditValueChanged);
@@ -388,14 +388,14 @@
             // 
             // lueWorkDay
             // 
-            this.lueWorkDay.Location = new System.Drawing.Point(113, 155);
+            this.lueWorkDay.Location = new System.Drawing.Point(111, 155);
             this.lueWorkDay.MenuManager = this.ribbonControl;
             this.lueWorkDay.Name = "lueWorkDay";
             this.lueWorkDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.lueWorkDay.Properties.NullText = "";
             this.lueWorkDay.Properties.PopupView = this.gridLookUpEdit1View;
-            this.lueWorkDay.Size = new System.Drawing.Size(251, 20);
+            this.lueWorkDay.Size = new System.Drawing.Size(253, 20);
             this.lueWorkDay.StyleController = this.layoutControl1;
             this.lueWorkDay.TabIndex = 3;
             this.lueWorkDay.EditValueChanged += new System.EventHandler(this.lueWorkDay_EditValueChanged_1);
@@ -409,21 +409,21 @@
             // 
             // txeDATE
             // 
-            this.txeDATE.Location = new System.Drawing.Point(103, 391);
+            this.txeDATE.Location = new System.Drawing.Point(101, 391);
             this.txeDATE.MenuManager = this.ribbonControl;
             this.txeDATE.Name = "txeDATE";
             this.txeDATE.Properties.ReadOnly = true;
-            this.txeDATE.Size = new System.Drawing.Size(271, 20);
+            this.txeDATE.Size = new System.Drawing.Size(273, 20);
             this.txeDATE.StyleController = this.layoutControl1;
             this.txeDATE.TabIndex = 23;
             // 
             // txeCREATE
             // 
-            this.txeCREATE.Location = new System.Drawing.Point(103, 367);
+            this.txeCREATE.Location = new System.Drawing.Point(101, 367);
             this.txeCREATE.MenuManager = this.ribbonControl;
             this.txeCREATE.Name = "txeCREATE";
             this.txeCREATE.Properties.ReadOnly = true;
-            this.txeCREATE.Size = new System.Drawing.Size(271, 20);
+            this.txeCREATE.Size = new System.Drawing.Size(273, 20);
             this.txeCREATE.StyleController = this.layoutControl1;
             this.txeCREATE.TabIndex = 22;
             // 
@@ -551,7 +551,7 @@
             0,
             0,
             0});
-            this.speYEAR.Location = new System.Drawing.Point(103, 28);
+            this.speYEAR.Location = new System.Drawing.Point(101, 28);
             this.speYEAR.MenuManager = this.ribbonControl;
             this.speYEAR.Name = "speYEAR";
             this.speYEAR.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -567,26 +567,27 @@
             0,
             0,
             0});
-            this.speYEAR.Size = new System.Drawing.Size(60, 20);
+            this.speYEAR.Size = new System.Drawing.Size(62, 20);
             this.speYEAR.StyleController = this.layoutControl1;
             this.speYEAR.TabIndex = 0;
+            this.speYEAR.EditValueChanged += new System.EventHandler(this.speYEAR_EditValueChanged);
             this.speYEAR.KeyDown += new System.Windows.Forms.KeyEventHandler(this.speYEAR_KeyDown);
             // 
             // txteCalendarNo
             // 
-            this.txteCalendarNo.Location = new System.Drawing.Point(103, 4);
+            this.txteCalendarNo.Location = new System.Drawing.Point(101, 4);
             this.txteCalendarNo.MenuManager = this.ribbonControl;
             this.txteCalendarNo.Name = "txteCalendarNo";
             this.txteCalendarNo.Properties.Mask.EditMask = "d";
             this.txteCalendarNo.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
             this.txteCalendarNo.Properties.ReadOnly = true;
-            this.txteCalendarNo.Size = new System.Drawing.Size(60, 20);
+            this.txteCalendarNo.Size = new System.Drawing.Size(62, 20);
             this.txteCalendarNo.StyleController = this.layoutControl1;
             this.txteCalendarNo.TabIndex = 4;
             // 
             // cbeComName
             // 
-            this.cbeComName.Location = new System.Drawing.Point(103, 76);
+            this.cbeComName.Location = new System.Drawing.Point(101, 76);
             this.cbeComName.MenuManager = this.ribbonControl;
             this.cbeComName.Name = "cbeComName";
             this.cbeComName.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFit;
@@ -595,7 +596,7 @@
             this.cbeComName.Properties.NullText = "";
             this.cbeComName.Properties.PopupSizeable = false;
             this.cbeComName.Properties.PopupView = this.searchLookUpEdit1View;
-            this.cbeComName.Size = new System.Drawing.Size(271, 20);
+            this.cbeComName.Size = new System.Drawing.Size(273, 20);
             this.cbeComName.StyleController = this.layoutControl1;
             this.cbeComName.TabIndex = 2;
             this.cbeComName.EditValueChanged += new System.EventHandler(this.cbeComName_EditValueChanged);
