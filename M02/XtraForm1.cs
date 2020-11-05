@@ -522,6 +522,7 @@ namespace M02
 
         private void gvCalendar_RowClick(object sender, RowClickEventArgs e)
         {
+            if (gvCalendar.IsFilterRow(e.RowHandle)) return;
             lblStatus.Text = "* Edit Calendar";
             lblStatus.ForeColor = Color.Red;
 
