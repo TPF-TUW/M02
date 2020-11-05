@@ -291,7 +291,7 @@ namespace M02
                 {
                     StringBuilder sbSQL = new StringBuilder();
                     //CalendarMaster
-                    int ComType = Convert.ToInt32(cbeComType.EditValue.ToString());
+                    //int ComType = Convert.ToInt32(cbeComType.EditValue.ToString());
 
                     string strCREATE = "0";
                     if (txeCREATE.Text.Trim() != "")
@@ -299,45 +299,20 @@ namespace M02
                         strCREATE = txeCREATE.Text.Trim();
                     }
 
+                    string strYear = speYEAR.Value.ToString();
+                    string strComType = cbeComType.EditValue.ToString();
+                    string strComName = cbeComName.EditValue.ToString();
+
                     if (lblStatus.Text == "* Add Calendar")
                     {
                         sbSQL.Append("  INSERT INTO CalendarMaster(CompanyType, OIDCompany, WorkingPerWeek, Year, CreatedBy, CreatedDate) ");
-                        sbSQL.Append("  VALUES('" + ComType.ToString() + "', '" + cbeComName.EditValue.ToString() + "', '" + lueWorkDay.EditValue.ToString() + "', '" + speYEAR.Value.ToString() + "', '" + strCREATE + "', GETDATE()) ");
+                        sbSQL.Append("  VALUES('" + strComType + "', '" + strComName + "', '" + lueWorkDay.EditValue.ToString() + "', '" + strYear + "', '" + strCREATE + "', GETDATE()) ");
                     }
                     else if (lblStatus.Text == "* Edit Calendar")
                     {
                         sbSQL.Append("  UPDATE CalendarMaster SET ");
-                        sbSQL.Append("      CompanyType = '" + ComType.ToString() + "', OIDCompany = '" + cbeComName.EditValue.ToString() + "', WorkingPerWeek = '" + lueWorkDay.EditValue.ToString() + "', Year = '" + speYEAR.Value.ToString() + "' ");
+                        sbSQL.Append("      CompanyType = '" + strComType + "', OIDCompany = '" + strComName + "', WorkingPerWeek = '" + lueWorkDay.EditValue.ToString() + "', Year = '" + strYear + "' ");
                         sbSQL.Append("  WHERE (OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
-                    }
-
-                    //sbSQL.Append("IF NOT EXISTS(SELECT OIDCALENDAR FROM CalendarMaster WHERE OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
-                    //sbSQL.Append(" BEGIN ");
-                    //sbSQL.Append("  INSERT INTO CalendarMaster(CompanyType, OIDCompany, WorkingPerWeek, Year, CreatedBy, CreatedDate) ");
-                    //sbSQL.Append("  VALUES('" + ComType.ToString() + "', '" + cbeComName.EditValue.ToString() + "', '" + lueWorkDay.EditValue.ToString() + "', '" + speYEAR.Value.ToString() + "', '" + strCREATE + "', GETDATE()) ");
-                    //sbSQL.Append(" END ");
-                    //sbSQL.Append("ELSE ");
-                    //sbSQL.Append(" BEGIN ");
-                    //sbSQL.Append("  UPDATE CalendarMaster SET ");
-                    //sbSQL.Append("      CompanyType = '" + ComType.ToString() + "', OIDCompany = '" + cbeComName.EditValue.ToString() + "', WorkingPerWeek = '" + lueWorkDay.EditValue.ToString() + "', Year = '" + speYEAR.Value.ToString() + "' ");
-                    //sbSQL.Append("  WHERE(OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
-                    //sbSQL.Append(" END ");
-
-                    //CalendarDetail
-                    sbSQL.Append("DELETE FROM CalendarDetail WHERE(OIDCALENDAR = '" + txteCalendarNo.Text.Trim() + "') ");
-
-                    if (gvHoliday.RowCount > 0)
-                    {
-                        for (int i = 0; i < gvHoliday.RowCount-1; i++)
-                        {
-                            string xDATE = gvHoliday.GetRowCellValue(i, "Date").ToString();
-                            if (xDATE != "")
-                            {
-                                xDATE = Convert.ToDateTime(xDATE).ToString("yyyy-MM-dd");
-                                sbSQL.Append("INSERT INTO CalendarDetail(OIDCALENDAR, Holiday) ");
-                                sbSQL.Append("  VALUES('" + txteCalendarNo.Text.Trim() + "', '" + xDATE + "')  ");
-                            }
-                        }
                     }
 
                     if (sbSQL.Length > 0)
@@ -347,13 +322,58 @@ namespace M02
                             bool chkSAVE = new DBQuery(sbSQL).runSQL();
                             if (chkSAVE == true)
                             {
-                                FUNC.msgInfo("Save complete.");
-                                bbiNew.PerformClick();
+                                sbSQL.Clear();
+                                sbSQL.Append("SELECT TOP(1) OIDCALENDAR FROM CalendarMaster WHERE (CompanyType = '" + strComType + "') AND (OIDCompany = '" + strComName + "') AND (Year = '" + strYear + "') ORDER BY OIDCALENDAR DESC ");
+                                string strID = new DBQuery(sbSQL).getString();
+
+                                sbSQL.Clear();
+                                if (strComType == "1") //Customer
+                                {
+                                    sbSQL.Append(" UPDATE Customer SET CalendarNo = '" + strID + "' WHERE (OIDCUST = '" + strComName + "')  ");
+                                }
+                                else if (strComType == "2") //Vendor
+                                {
+                                    sbSQL.Append(" UPDATE Vendor SET CalendarNo = '" + strID + "' WHERE (OIDVEND = '" + strComName + "')  ");
+                                }
+
+                                //CalendarDetail
+                                sbSQL.Append("DELETE FROM CalendarDetail WHERE (OIDCALENDAR = '" + strID + "') ");
+
+                                if (gvHoliday.RowCount > 0)
+                                {
+                                    for (int i = 0; i < gvHoliday.RowCount - 1; i++)
+                                    {
+                                        string xDATE = gvHoliday.GetRowCellValue(i, "Date").ToString();
+                                        if (xDATE != "")
+                                        {
+                                            xDATE = Convert.ToDateTime(xDATE).ToString("yyyy-MM-dd");
+                                            sbSQL.Append("INSERT INTO CalendarDetail(OIDCALENDAR, Holiday) ");
+                                            sbSQL.Append("  VALUES('" + strID + "', '" + xDATE + "')  ");
+                                        }
+                                    }
+                                }
+
+                                if (sbSQL.Length > 0)
+                                {
+                                    try
+                                    {
+                                        chkSAVE = new DBQuery(sbSQL).runSQL();
+                                        if (chkSAVE == true)
+                                        {
+                                            FUNC.msgInfo("Save complete.");
+                                            bbiNew.PerformClick();
+                                        }
+                                    }
+                                    catch (Exception)
+                                    { }
+                                }
                             }
                         }
                         catch (Exception)
                         { }
                     }
+
+                    
                 }
                 
             }
@@ -526,12 +546,16 @@ namespace M02
             lblStatus.Text = "* Edit Calendar";
             lblStatus.ForeColor = Color.Red;
 
+            string strComType = gvCalendar.GetFocusedRowCellValue("CompanyType").ToString();
+            string strComName = gvCalendar.GetFocusedRowCellValue("CompanyNo").ToString();
+            string strWorkDay = gvCalendar.GetFocusedRowCellValue("WorkingPerWeek").ToString();
+
             txteCalendarNo.EditValue = gvCalendar.GetFocusedRowCellValue("CalendarNo").ToString();
             LoadHoliday();
             speYEAR.Value = Convert.ToInt32(gvCalendar.GetFocusedRowCellValue("Year").ToString());
-            cbeComType.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyType").ToString();
-            cbeComName.EditValue = gvCalendar.GetFocusedRowCellValue("CompanyNo").ToString();
-            lueWorkDay.EditValue = gvCalendar.GetFocusedRowCellValue("WorkingPerWeek").ToString();
+            cbeComType.EditValue = strComType;
+            cbeComName.EditValue = strComName;
+            lueWorkDay.EditValue = strWorkDay;
 
             txeCREATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedBy").ToString();
             txeDATE.EditValue = gvCalendar.GetFocusedRowCellValue("CreatedDate").ToString();
