@@ -400,45 +400,7 @@ namespace M02
 
         private void cbeComName_EditValueChanged(object sender, EventArgs e)
         {
-            if (cbeComName.Text.Trim() != "" && lblStatus.Text == "* Add Calendar")
-            {
-                StringBuilder sbSQL = new StringBuilder();
-                sbSQL.Append("SELECT TOP(1) OIDCALENDAR FROM CalendarMaster WHERE (Year = '" + speYEAR.Value.ToString() + "') AND (CompanyType = '" + cbeComType.EditValue.ToString() + "') AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
-                if (new DBQuery(sbSQL).getString() != "")
-                {
-                    FUNC.msgWarning("Duplicate company. !! Please Change.");
-                    cbeComName.EditValue = "";
-                    cbeComName.Focus();
-                }
-                else
-                {
-                    lueWorkDay.Focus();
-                }
-            }
-            else if (cbeComName.Text.Trim() != "" && lblStatus.Text == "* Edit Calendar")
-            {
-                StringBuilder sbSQL = new StringBuilder();
-                sbSQL.Append("SELECT TOP(1) OIDCALENDAR ");
-                sbSQL.Append("FROM CalendarMaster ");
-                sbSQL.Append("WHERE (Year = '" + speYEAR.Value.ToString() + "') ");
-                sbSQL.Append("AND (CompanyType = '" + cbeComType.EditValue.ToString() + "') ");
-                sbSQL.Append("AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
-                string strCHK = new DBQuery(sbSQL).getString();
-                if (strCHK != "" && strCHK != txteCalendarNo.Text.Trim())
-                {
-                    FUNC.msgWarning("Duplicate company. !! Please Change.");
-                    cbeComName.EditValue = "";
-                    cbeComName.Focus();
-                }
-                else
-                {
-                    lueWorkDay.Focus();
-                }
-            }
-            else
-            {
-                lueWorkDay.Focus();
-            }
+            CheckName();
         }
 
         private void LoadGV(string Year="", string xType="")
@@ -579,6 +541,51 @@ namespace M02
                 xType = cbeComType.EditValue.ToString();
             }
             LoadGV(speYEAR.Value.ToString(), xType);
+
+            CheckName();
+        }
+
+        private void CheckName()
+        {
+            if (cbeComName.Text.Trim() != "" && lblStatus.Text == "* Add Calendar")
+            {
+                StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT TOP(1) OIDCALENDAR FROM CalendarMaster WHERE (Year = '" + speYEAR.Value.ToString() + "') AND (CompanyType = '" + cbeComType.EditValue.ToString() + "') AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
+                if (new DBQuery(sbSQL).getString() != "")
+                {
+                    FUNC.msgWarning("Duplicate company. !! Please Change.");
+                    cbeComName.EditValue = "";
+                    cbeComName.Focus();
+                }
+                else
+                {
+                    lueWorkDay.Focus();
+                }
+            }
+            else if (cbeComName.Text.Trim() != "" && lblStatus.Text == "* Edit Calendar")
+            {
+                StringBuilder sbSQL = new StringBuilder();
+                sbSQL.Append("SELECT TOP(1) OIDCALENDAR ");
+                sbSQL.Append("FROM CalendarMaster ");
+                sbSQL.Append("WHERE (Year = '" + speYEAR.Value.ToString() + "') ");
+                sbSQL.Append("AND (CompanyType = '" + cbeComType.EditValue.ToString() + "') ");
+                sbSQL.Append("AND (OIDCompany = '" + cbeComName.EditValue.ToString() + "') ");
+                string strCHK = new DBQuery(sbSQL).getString();
+                if (strCHK != "" && strCHK != txteCalendarNo.Text.Trim())
+                {
+                    FUNC.msgWarning("Duplicate company. !! Please Change.");
+                    cbeComName.EditValue = "";
+                    cbeComName.Focus();
+                }
+                else
+                {
+                    lueWorkDay.Focus();
+                }
+            }
+            else
+            {
+                lueWorkDay.Focus();
+            }
         }
 
         private void bbiRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
