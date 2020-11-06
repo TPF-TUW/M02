@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -601,6 +602,51 @@ namespace M02
             speYEAR.Focus();
 
             tabbedControlGroup1.SelectedTabPageIndex = 0;
+        }
+
+        private void gvCalendar_CustomRowCellEditForEditing(object sender, CustomRowCellEditEventArgs e)
+        {
+            
+        }
+
+        private void gvCalendar_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+
+        }
+
+        private void gvHoliday_CustomRowCellEditForEditing(object sender, CustomRowCellEditEventArgs e)
+        {
+
+        }
+
+        private void gvHoliday_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            if (e.Column.FieldName == "Date")
+            {
+                string strDATE = gvHoliday.GetRowCellValue(e.RowHandle, "Date").ToString();
+                DataTable dtHOL = (DataTable)gcHoliday.DataSource;
+                int i = 0;
+                foreach (DataRow row in dtHOL.Rows)
+                {
+                    if (e.RowHandle != i)
+                    {
+                        string xDATE = row["Date"].ToString();
+                        if (strDATE == xDATE)
+                        {
+                            dtHOL.Rows[e.RowHandle]["Date"] = DBNull.Value;
+                            FUNC.msgWarning("Duplicate Date.");
+                            break;
+                        }
+                    }
+                    i++;
+                }
+                gcHoliday.DataSource = dtHOL;
+            }
+        }
+
+        private void gvHoliday_CellValueChanging(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            
         }
     }
 }
