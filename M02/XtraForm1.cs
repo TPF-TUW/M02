@@ -266,6 +266,8 @@ namespace M02
 
         private void bbiSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            gvHoliday.CloseEditor();
+            gvHoliday.UpdateCurrentRow();
             if (speYEAR.Value < 1000)
             {
                 FUNC.msgWarning("The year must have 4 digits.");
