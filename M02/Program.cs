@@ -16,7 +16,7 @@ namespace M02
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new XtraForm1());
+            Application.Run(new M02());
         }
     }
 }

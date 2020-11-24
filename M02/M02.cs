@@ -13,11 +13,11 @@ using MDS00;
 
 namespace M02
 {
-    public partial class XtraForm1 : DevExpress.XtraBars.Ribbon.RibbonForm
+    public partial class M02 : DevExpress.XtraBars.Ribbon.RibbonForm
     {
         private const int HOLIDAY_ROWS = 30;
         private Functionality.Function FUNC = new Functionality.Function();
-        public XtraForm1()
+        public M02()
         {
             InitializeComponent();
             UserLookAndFeel.Default.StyleChanged += MyStyleChanged;
